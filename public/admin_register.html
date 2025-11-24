@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Registration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 min-h-screen flex items-center justify-center">
+
+    <div class="bg-white/10 backdrop-blur-lg rounded-2xl shadow-xl w-full max-w-sm p-8 text-white">
+        <h1 class="text-2xl font-bold mb-4 text-center text-orange-400">📝 Registrasi Admin</h1>
+        <p class="text-sm text-gray-400 mb-6 text-center">Buat akun administrator untuk mengakses dashboard.</p>
+
+        <form id="adminRegisterForm" class="space-y-4" onsubmit="return false;">
+            <div>
+                <label for="email" class="block text-sm font-medium mb-1">Email</label>
+                <input type="email" id="email" name="email" placeholder="admin@example.com" required
+                    class="w-full px-4 py-2 rounded-lg bg-white/20 border border-white/30 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400">
+            </div>
+
+            <div>
+                <label for="password" class="block text-sm font-medium mb-1">Password</label>
+                <input type="password" id="password" name="password" placeholder="Min. 6 Karakter" required
+                    class="w-full px-4 py-2 rounded-lg bg-white/20 border border-white/30 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400">
+            </div>
+
+            <div>
+                <label for="confirmPassword" class="block text-sm font-medium mb-1">Konfirmasi Password</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Ulangi Password" required
+                    class="w-full px-4 py-2 rounded-lg bg-white/20 border border-white/30 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400">
+            </div>
+
+            <button type="button" onclick="registerAdmin()"
+                class="w-full bg-orange-600 hover:bg-orange-700 transition-colors duration-200 py-2 rounded-lg font-semibold shadow-md">
+                Register
+            </button>
+        </form>
+
+        <div id="message" class="mt-4 text-center text-sm hidden"></div>
+
+        <p class="text-center text-xs text-gray-400 mt-6">
+            Sudah punya akun? <a href="admin_login.html" class="text-orange-400 hover:text-orange-200 underline">Login Admin</a>
+        </p>
+    </div>
+
+    <script>
+        const messageBox = document.getElementById("message");
+
+        function showMessage(text, isError = false) {
+            messageBox.textContent = text;
+            messageBox.classList.remove('hidden', 'text-green-400', 'text-red-400');
+            messageBox.classList.add(isError ? 'text-red-400' : 'text-green-400');
+        }
+
+        async function registerAdmin() {
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirmPassword").value;
+
+            if (!email || !password || !confirmPassword) {
+                return showMessage("Semua field wajib diisi.", true);
+            }
+            if (password !== confirmPassword) {
+                return showMessage("Password dan Konfirmasi Password tidak cocok.", true);
+            }
+            if (password.length < 6) {
+                return showMessage("Password minimal 6 karakter.", true);
+            }
+
+            try {
+                const response = await fetch("/admin/register", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showMessage(data.message + " Mengarahkan ke halaman login...", false);
+                    setTimeout(() => {
+                        window.location.href = 'admin_login.html';
+                    }, 1500);
+                } else {
+                    showMessage(data.error || "Gagal registrasi admin.", true);
+                }
+            } catch (err) {
+                showMessage("Gagal menghubungi server.", true);
+            }
+        }
+    </script>
+
+</body>
+</html>
