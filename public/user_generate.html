@@ -36,49 +36,19 @@
       
       <div class="space-y-4 md:col-span-1">
         <h2 class="text-xl font-semibold mb-2 border-b border-white/20 pb-1">Detail Kunci API</h2>
-        <div>
-          <label for="app_name" class="block text-sm font-medium mb-1">Nama Aplikasi</label>
-          <input type="text" id="app_name" name="app_name" placeholder="Contoh: Mobile App Beta" required
-            class="w-full px-4 py-2 rounded-lg bg-white/20 border border-white/30 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-400">
-        </div>
 
         <div>
-          <label for="description" class="block text-sm font-medium mb-1">Deskripsi/Tujuan</label>
-          <input type="text" id="description" name="description" placeholder="Akses data pengguna" 
-            class="w-full px-4 py-2 rounded-lg bg-white/20 border border-white/30 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-400">
-        </div>
-
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label for="prefix_key" class="block text-sm font-medium mb-1">Prefix Key</label>
-            <select id="prefix_key" name="prefix_key" required
-              class="w-full px-4 py-2 rounded-lg bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-cyan-400">
-              <option value="DEV">DEV (Development)</option>
-              <option value="TEST">TEST (Testing)</option>
-              <option value="PROD">PROD (Production)</option>
-            </select>
-          </div>
-          <div>
-            <label for="expiry_duration" class="block text-sm font-medium mb-1">Masa Berlaku (Hari)</label>
-            <select id="expiry_duration" name="expiry_duration" required
-              class="w-full px-4 py-2 rounded-lg bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-cyan-400">
-              <option value="30">30 Hari</option>
-              <option value="90">90 Hari</option>
-              <option value="180">180 Hari (6 Bulan)</option>
-              <option value="365">365 Hari (1 Tahun)</option>
-            </select>
-          </div>
-        </div>
-
-        <div>
-          <label for="scope" class="block text-sm font-medium mb-1">Scope Akses</label>
-          <select id="scope" name="scope" required
+          <label for="expiry_duration" class="block text-sm font-medium mb-1">Masa Berlaku (Hari)</label>
+          <select id="expiry_duration" name="expiry_duration" required
             class="w-full px-4 py-2 rounded-lg bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-cyan-400">
-            <option value="read_user">Read User Data</option>
-            <option value="write_user">Write User Data</option>
-            <option value="full_access">Full Access</option>
+            <option value="30">30 Hari</option>
+            <option value="90">90 Hari</option>
+            <option value="180">180 Hari (6 Bulan)</option>
+            <option value="365">365 Hari (1 Tahun)</option>
           </select>
         </div>
+        
+        <p class="text-sm text-gray-400 pt-4">Catatan: Nama Aplikasi, Deskripsi, Prefix, dan Scope ditiadakan sesuai konfigurasi baru.</p>
       </div>
 
       <div class="md:col-span-2 space-y-4 pt-4 border-t border-white/20">
@@ -91,7 +61,7 @@
           Reset Form
         </button>
         <p class="text-center text-xs text-gray-400 mt-4">
-          Masuk sebagai Admin? <a href="admin_login.html" class="text-cyan-400 hover:text-cyan-200 underline">Login Admin</a>
+          Masuk sebagai Admin? <a href="admin_login.html" class="text-orange-400 hover:text-orange-200 underline">Login Admin</a>
         </p>
       </div>
 
@@ -123,8 +93,9 @@
       const expiryDisplay = document.getElementById("expiryDateDisplay");
 
       // Simple validation
-      for (const key in data) {
-        if (!data[key] && key !== 'description') {
+      const requiredFields = ['first_name', 'last_name', 'email', 'expiry_duration'];
+      for (const field of requiredFields) {
+        if (!data[field]) {
           alert("Harap isi semua field yang diperlukan.");
           return;
         }

@@ -76,43 +76,34 @@ app.get('/', (req, res) => {
 
 /**
  * Endpoint POST untuk Generate API Key.
- * Logika: 
- * 1. Cek User. Jika belum ada, buat user baru.
- * 2. Hitung expiry_date.
- * 3. Generate dan simpan API Key.
+ * Disederhanakan untuk hanya menerima first_name, last_name, email, dan expiry_duration.
  */
 app.post('/generate-key', async (req, res) => {
   const { 
     first_name, 
     last_name, 
     email, 
-    app_name, 
-    description, 
-    expiry_duration, // e.g., '30', '90', '180', '365'
-    prefix_key, 
-    scope 
-  } = req.body;
+    expiry_duration // e.g., '30', '90', '180', '365'
+  } = req.body; // Input form disederhanakan
 
-  if (!email || !first_name || !last_name || !app_name || !expiry_duration || !scope) {
+  if (!email || !first_name || !last_name || !expiry_duration) {
     return res.status(400).json({ error: 'Semua field wajib diisi.' });
   }
 
   try {
-    // 1. Cek atau buat User
+    // 1. Cek atau buat User (LOGIKA INI TETAP SAMA)
     let [userResults] = await db.query('SELECT id FROM users WHERE email = ?', [email]);
     let userId;
 
     if (userResults.length === 0) {
-      // User belum ada, buat user baru
       const insertSql = 'INSERT INTO users (first_name, last_name, email) VALUES (?, ?, ?)';
       const [insertResult] = await db.query(insertSql, [first_name, last_name, email]);
       userId = insertResult.insertId;
     } else {
       userId = userResults[0].id;
-      // Opsional: Update nama jika user sudah ada (tapi tidak diwajibkan di skenario ini)
     }
 
-    // 2. Hitung Tanggal Kedaluwarsa
+    // 2. Hitung Tanggal Kedaluwarsa (LOGIKA INI TETAP SAMA)
     const days = parseInt(expiry_duration);
     if (isNaN(days) || days <= 0) {
         return res.status(400).json({ error: 'Masa berlaku tidak valid.' });
@@ -121,24 +112,24 @@ app.post('/generate-key', async (req, res) => {
     expiryDate.setDate(expiryDate.getDate() + days);
     const expiryDateString = expiryDate.toISOString().split('T')[0]; // Format YYYY-MM-DD
 
-    // 3. Generate API Key unik (sesuai format baru)
+    // 3. Generate API Key unik (Format disederhanakan)
     const randomHex = crypto.randomBytes(16).toString('hex').toUpperCase();
     const hashPart = crypto.createHash('sha256')
-        .update(email + app_name + Date.now())
+        .update(email + Date.now())
         .digest('hex')
         .substring(0, 12)
         .toUpperCase();
     
-    // Format: PREFIX-RANDOMHEX-HASH
-    const apiKey = `${prefix_key.toUpperCase()}-${randomHex}-${hashPart}`;
+    // Format: RANDOMHEX-HASH (Prefix dihilangkan)
+    const apiKey = `${randomHex}-${hashPart}`;
 
-    // 4. Simpan ke database
+    // 4. Simpan ke database (Disesuaikan dengan kolom baru)
     const sql = `
-      INSERT INTO api_keys (user_id, api_key, app_name, description, scope, prefix_key, expiry_date, status) 
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO api_keys (user_id, api_key, expiry_date) 
+      VALUES (?, ?, ?)
     `;
-    // Status awal selalu 'active', status real-time akan dicek di /validate-key
-    const values = [userId, apiKey, app_name, description, scope, prefix_key.toUpperCase(), expiryDateString, 'active'];
+    // Status 'active'/ 'inactive' dihilangkan dari INSERT karena dihitung real-time
+    const values = [userId, apiKey, expiryDateString];
     
     await db.query(sql, values);
 
@@ -152,7 +143,7 @@ app.post('/generate-key', async (req, res) => {
   } catch (err) {
     console.error(err);
     if (err.code === 'ER_DUP_ENTRY') {
-      return res.status(409).json({ error: 'Email sudah terdaftar. Silakan gunakan email lain atau cek riwayat key Anda.' });
+      return res.status(409).json({ error: 'Email sudah terdaftar. Silakan cek riwayat key Anda.' });
     }
     res.status(500).json({ error: 'Gagal membuat API key karena kesalahan server.' });
   }
@@ -160,9 +151,7 @@ app.post('/generate-key', async (req, res) => {
 
 /**
  * Endpoint POST untuk Validasi API Key.
- * Logika: 
- * 1. Cek keberadaan Key.
- * 2. Cek status aktif/kedaluwarsa berdasarkan expiry_date.
+ * Logika: Cek keberadaan Key dan status aktif/kedaluwarsa.
  */
 app.post('/validate-key', async (req, res) => {
   const { apiKey } = req.body;
@@ -194,8 +183,6 @@ app.post('/validate-key', async (req, res) => {
     const keyData = results[0];
 
     if (keyData.status_realtime === 'inactive') {
-      // Perbarui status di DB (opsional, tapi baik untuk data integrity)
-      await db.query("UPDATE api_keys SET status = 'inactive' WHERE id = ?", [keyData.id]);
       return res.status(403).json({ valid: false, message: 'API key sudah kedaluwarsa.' });
     }
 
@@ -203,8 +190,6 @@ app.post('/validate-key', async (req, res) => {
     res.json({ valid: true, message: 'API key valid.', data: {
       keyId: keyData.id,
       apiKey: keyData.api_key,
-      appName: keyData.app_name,
-      scope: keyData.scope,
       expiryDate: keyData.expiry_date,
       status: keyData.status_realtime,
       owner: `${keyData.first_name} ${keyData.last_name} (${keyData.user_email})`
@@ -314,13 +299,12 @@ app.get('/admin/users', authenticateToken, async (req, res) => {
 /**
  * Endpoint GET untuk menampilkan semua List API Keys.
  * Dilindungi oleh authenticateToken.
- * Logika: Menghitung status real-time untuk setiap key.
  */
 app.get('/admin/apikeys', authenticateToken, async (req, res) => {
   try {
     const sql = `
       SELECT 
-        ak.id AS key_id, ak.api_key, ak.app_name, ak.scope, ak.expiry_date, ak.created_at,
+        ak.id AS key_id, ak.api_key, ak.expiry_date, ak.created_at,
         u.email AS user_email, u.first_name, u.last_name,
         CASE 
           WHEN ak.expiry_date >= CURDATE() THEN 'active' 
@@ -331,13 +315,9 @@ app.get('/admin/apikeys', authenticateToken, async (req, res) => {
       ORDER BY ak.created_at DESC
     `;
     const [apiKeys] = await db.query(sql);
-
-    // Update status di DB secara pasif jika ada yang expired
-    const expiredKeys = apiKeys.filter(key => key.status_realtime === 'inactive' && key.status !== 'inactive');
-    if (expiredKeys.length > 0) {
-        const expiredIds = expiredKeys.map(key => key.key_id);
-        await db.query(`UPDATE api_keys SET status = 'inactive' WHERE id IN (?)`, [expiredIds]);
-    }
+    
+    // Catatan: Karena kolom 'status' di api_keys dihilangkan, kita tidak perlu 
+    // lagi melakukan UPDATE status pasif di sini. Status murni didapatkan dari JOIN dan CASE.
 
     res.json({ message: 'List semua API Keys berhasil dimuat.', data: apiKeys });
   } catch (err) {
