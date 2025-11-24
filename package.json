@@ -1,17 +1,20 @@
 {
-  "name": "prak7",
+  "name": "prak7-fullstack",
   "version": "1.0.0",
-  "description": "",
+  "description": "API Key Generator and Admin Dashboard with Middleware",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "crypto": "^1.0.1",
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.15.3"
   }
 }
