@@ -6,78 +6,80 @@
   <title>Generate API Key | User</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-slate-800 min-h-screen flex items-center justify-center p-4">
+<body class="bg-[#4d5b6f] min-h-screen flex items-center justify-center p-4">
 
-  <div class="bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl w-full max-w-2xl p-8 text-white">
-    <h1 class="text-3xl font-bold mb-2 text-center text-cyan-400">🔑 API Key Generator</h1>
-    <p class="text-sm text-gray-300 mb-6 text-center">
+  <div class="bg-white/10 backdrop-blur-sm rounded-2xl shadow-2xl w-full max-w-2xl p-8 text-white">
+    <h1 class="text-3xl font-bold mb-2 text-center text-[#e5c3bd]">API Key Generator</h1>
+    <p class="text-sm text-[#a3c1cd] mb-6 text-center">
       Isi detail berikut untuk mendapatkan kunci API unik Anda.
     </p>
 
     <form id="apiKeyForm" class="grid grid-cols-1 md:grid-cols-2 gap-4" onsubmit="return false;">
       <div class="space-y-4 md:col-span-1">
-        <h2 class="text-xl font-semibold mb-2 border-b border-white/20 pb-1">Detail Pengguna</h2>
+        <h2 class="text-xl font-semibold mb-2 border-b border-white/20 pb-1 text-[#e5c3bd]">Detail Pengguna</h2>
         <div>
-          <label for="first_name" class="block text-sm font-medium mb-1">Nama Depan</label>
+          <label for="first_name" class="block text-sm font-medium mb-1 text-[#a3c1cd]">Nama Depan</label>
           <input type="text" id="first_name" name="first_name" placeholder="Contoh: Budi" required
-            class="w-full px-4 py-2 rounded-lg bg-white/20 border border-white/30 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-400">
+            class="w-full px-4 py-2 rounded-lg bg-white/20 border border-white/30 placeholder-[#a3c1cd] text-white focus:outline-none focus:ring-2 focus:ring-[#e5c3bd]">
         </div>
         <div>
-          <label for="last_name" class="block text-sm font-medium mb-1">Nama Belakang</label>
+          <label for="last_name" class="block text-sm font-medium mb-1 text-[#a3c1cd]">Nama Belakang</label>
           <input type="text" id="last_name" name="last_name" placeholder="Contoh: Santoso" required
-            class="w-full px-4 py-2 rounded-lg bg-white/20 border border-white/30 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-400">
+            class="w-full px-4 py-2 rounded-lg bg-white/20 border border-white/30 placeholder-[#a3c1cd] text-white focus:outline-none focus:ring-2 focus:ring-[#e5c3bd]">
         </div>
         <div>
-          <label for="email" class="block text-sm font-medium mb-1">Email</label>
+          <label for="email" class="block text-sm font-medium mb-1 text-[#a3c1cd]">Email</label>
           <input type="email" id="email" name="email" placeholder="Contoh: user@mail.com" required
-            class="w-full px-4 py-2 rounded-lg bg-white/20 border border-white/30 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-400">
+            class="w-full px-4 py-2 rounded-lg bg-white/20 border border-white/30 placeholder-[#a3c1cd] text-white focus:outline-none focus:ring-2 focus:ring-[#e5c3bd]">
         </div>
       </div>
       
       <div class="space-y-4 md:col-span-1">
-        <h2 class="text-xl font-semibold mb-2 border-b border-white/20 pb-1">Detail Kunci API</h2>
+        <h2 class="text-xl font-semibold mb-2 border-b border-white/20 pb-1 text-[#e5c3bd]">Detail Kunci API</h2>
 
         <div>
-          <label for="expiry_duration" class="block text-sm font-medium mb-1">Masa Berlaku (Hari)</label>
+          <label for="expiry_duration" class="block text-sm font-medium mb-1 text-[#a3c1cd]">Masa Berlaku (Hari)</label>
           <select id="expiry_duration" name="expiry_duration" required
-            class="w-full px-4 py-2 rounded-lg bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-cyan-400">
+            class="w-full px-4 py-2 rounded-lg bg-white/20 border border-white/30 text-white focus:outline-none focus:ring-2 focus:ring-[#e5c3bd]">
             <option value="30">30 Hari</option>
             <option value="90">90 Hari</option>
             <option value="180">180 Hari (6 Bulan)</option>
             <option value="365">365 Hari (1 Tahun)</option>
           </select>
-        </div>        
+        </div>
+        
+        <p class="text-sm text-[#a3c1cd] pt-4">Catatan: Kunci API hanya mencakup identifikasi pengguna dan masa berlaku.</p>
       </div>
 
       <div class="md:col-span-2 space-y-4 pt-4 border-t border-white/20">
         <button type="button" onclick="generateApiKey()"
-          class="w-full bg-cyan-600 hover:bg-cyan-700 transition-colors duration-200 py-3 rounded-lg font-semibold shadow-lg">
+          class="w-full bg-[#e5c3bd] text-[#4d5b6f] hover:bg-[#a3c1cd] transition-colors duration-200 py-3 rounded-lg font-semibold shadow-lg">
           Generate API Key
         </button>
         <button type="reset"
-          class="w-full bg-gray-500 hover:bg-gray-600 transition-colors duration-200 py-3 rounded-lg font-semibold shadow-lg">
+          class="w-full bg-gray-500 text-white hover:bg-gray-600 transition-colors duration-200 py-3 rounded-lg font-semibold shadow-lg">
           Reset Form
         </button>
-        <p class="text-center text-xs text-gray-400 mt-4">
-          Masuk sebagai Admin? <a href="admin_login.html" class="text-orange-400 hover:text-orange-200 underline">Login Admin</a>
+        <p class="text-center text-xs text-[#a3c1cd] mt-4">
+          Masuk sebagai Admin? <a href="admin_login.html" class="text-[#e5c3bd] hover:text-white underline">Login Admin</a>
         </p>
       </div>
 
     </form>
 
-    <div id="result" class="hidden mt-6 bg-green-900/50 border border-green-700/50 rounded-lg p-6">
-      <p class="text-md font-semibold text-green-300 mb-2 text-center">✅ API Key Berhasil Dibuat!</p>
-      <p class="text-sm text-gray-300">API Key Anda:</p>
-      <div class="font-mono text-cyan-300 text-xl break-all p-3 bg-black/30 rounded-lg mb-3 select-all" id="apiKeyDisplay">-</div>
-      <p class="text-sm text-gray-300">Kedaluwarsa pada: <span id="expiryDateDisplay" class="font-semibold text-white"></span></p>
+    <div id="result" class="hidden mt-6 bg-[#4d5b6f]/50 border border-[#e5c3bd]/50 rounded-lg p-6">
+      <p class="text-md font-semibold text-[#a3c1cd] mb-2 text-center">API Key Berhasil Dibuat!</p>
+      <p class="text-sm text-white">API Key Anda:</p>
+      <div class="font-mono text-[#e5c3bd] text-xl break-all p-3 bg-black/30 rounded-lg mb-3 select-all" id="apiKeyDisplay">-</div>
+      <p class="text-sm text-white">Kedaluwarsa pada: <span id="expiryDateDisplay" class="font-semibold text-[#a3c1cd]"></span></p>
       <button onclick="copyKey()" 
-        class="mt-3 text-sm bg-cyan-600 hover:bg-cyan-700 px-4 py-2 rounded-lg font-medium">
+        class="mt-3 text-sm bg-[#e5c3bd] text-[#4d5b6f] hover:bg-[#a3c1cd] px-4 py-2 rounded-lg font-medium">
         Salin Key
       </button>
     </div>
 
-    <div id="loading" class="hidden mt-4 text-center text-sm text-gray-400 animate-pulse">
-      ⏳ Sedang memproses dan menyimpan API key...
+    <div id="loading" class="hidden mt-4 text-center text-sm text-[#a3c1cd] animate-pulse">
+      Sedang memproses dan menyimpan API key...
     </div>
   </div>
 
@@ -90,7 +92,6 @@
       const display = document.getElementById("apiKeyDisplay");
       const expiryDisplay = document.getElementById("expiryDateDisplay");
 
-      // Simple validation
       const requiredFields = ['first_name', 'last_name', 'email', 'expiry_duration'];
       for (const field of requiredFields) {
         if (!data[field]) {
@@ -116,12 +117,12 @@
           expiryDisplay.textContent = result.expiryDate;
           resultBox.classList.remove("hidden");
           resultBox.classList.remove("bg-red-900/50", "border-red-700/50");
-          resultBox.classList.add("bg-green-900/50", "border-green-700/50");
+          resultBox.classList.add("bg-[#4d5b6f]/50", "border-[#e5c3bd]/50");
         } else {
           display.textContent = result.error || "Terjadi kesalahan saat membuat API key.";
           expiryDisplay.textContent = "-";
           resultBox.classList.remove("hidden");
-          resultBox.classList.remove("bg-green-900/50", "border-green-700/50");
+          resultBox.classList.remove("bg-[#4d5b6f]/50", "border-[#e5c3bd]/50");
           resultBox.classList.add("bg-red-900/50", "border-red-700/50");
         }
       } catch (err) {

@@ -6,35 +6,35 @@
     <title>Admin Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-900 min-h-screen flex items-center justify-center">
+<body class="bg-[#4d5b6f] min-h-screen flex items-center justify-center">
 
-    <div class="bg-white/10 backdrop-blur-lg rounded-2xl shadow-xl w-full max-w-sm p-8 text-white">
-        <h1 class="text-2xl font-bold mb-4 text-center text-orange-400">🔒 Login Admin</h1>
-        <p class="text-sm text-gray-400 mb-6 text-center">Masukkan kredensial untuk masuk ke dashboard.</p>
+    <div class="bg-white/10 backdrop-blur-sm rounded-2xl shadow-xl w-full max-w-sm p-8 text-white">
+        <h1 class="text-2xl font-bold mb-4 text-center text-[#e5c3bd]">Login Admin</h1>
+        <p class="text-sm text-[#a3c1cd] mb-6 text-center">Masukkan kredensial untuk masuk ke dashboard.</p>
 
         <form id="adminLoginForm" class="space-y-4" onsubmit="return false;">
             <div>
-                <label for="email" class="block text-sm font-medium mb-1">Email</label>
+                <label for="email" class="block text-sm font-medium mb-1 text-[#a3c1cd]">Email</label>
                 <input type="email" id="email" name="email" placeholder="admin@example.com" required
-                    class="w-full px-4 py-2 rounded-lg bg-white/20 border border-white/30 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400">
+                    class="w-full px-4 py-2 rounded-lg bg-white/20 border border-white/30 placeholder-[#a3c1cd] text-white focus:outline-none focus:ring-2 focus:ring-[#e5c3bd]">
             </div>
 
             <div>
-                <label for="password" class="block text-sm font-medium mb-1">Password</label>
+                <label for="password" class="block text-sm font-medium mb-1 text-[#a3c1cd]">Password</label>
                 <input type="password" id="password" name="password" placeholder="Password Anda" required
-                    class="w-full px-4 py-2 rounded-lg bg-white/20 border border-white/30 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400">
+                    class="w-full px-4 py-2 rounded-lg bg-white/20 border border-white/30 placeholder-[#a3c1cd] text-white focus:outline-none focus:ring-2 focus:ring-[#e5c3bd]">
             </div>
 
             <button type="button" onclick="loginAdmin()"
-                class="w-full bg-orange-600 hover:bg-orange-700 transition-colors duration-200 py-2 rounded-lg font-semibold shadow-md">
+                class="w-full bg-[#e5c3bd] text-[#4d5b6f] hover:bg-[#a3c1cd] transition-colors duration-200 py-2 rounded-lg font-semibold shadow-md">
                 Login
             </button>
         </form>
 
         <div id="message" class="mt-4 text-center text-sm hidden"></div>
 
-        <p class="text-center text-xs text-gray-400 mt-6">
-            Belum punya akun? <a href="admin_register.html" class="text-orange-400 hover:text-orange-200 underline">Registrasi Admin</a>
+        <p class="text-center text-xs text-white mt-6">
+            Belum punya akun? <a href="admin_register.html" class="text-[#a3c1cd] hover:text-[#e5c3bd] underline">Registrasi Admin</a>
         </p>
     </div>
 
@@ -43,8 +43,8 @@
 
         function showMessage(text, isError = false) {
             messageBox.textContent = text;
-            messageBox.classList.remove('hidden', 'text-green-400', 'text-red-400');
-            messageBox.classList.add(isError ? 'text-red-400' : 'text-green-400');
+            messageBox.classList.remove('hidden', 'text-white', 'text-red-400');
+            messageBox.classList.add(isError ? 'text-red-400' : 'text-white');
         }
 
         async function loginAdmin() {
@@ -65,7 +65,6 @@
                 const data = await response.json();
 
                 if (response.ok && data.token) {
-                    // Simpan token di localStorage
                     localStorage.setItem('adminToken', data.token);
                     showMessage(data.message + " Mengarahkan ke dashboard...", false);
                     setTimeout(() => {

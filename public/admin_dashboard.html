@@ -6,16 +6,16 @@
     <title>Admin Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .active-status { color: #10B981; } /* emerald-500 */
-        .inactive-status { color: #F87171; } /* red-400 */
+        .active-status { color: #a3c1cd; }
+        .inactive-status { color: #f87171; } 
     </style>
 </head>
-<body class="bg-gray-800 min-h-screen text-white">
+<body class="bg-[#4d5b6f] min-h-screen text-white">
 
-    <header class="bg-gray-900 shadow-md p-4 flex justify-between items-center">
-        <h1 class="text-xl font-bold text-orange-400">🛠️ Admin Dashboard</h1>
+    <header class="bg-[#4d5b6f]/80 shadow-md p-4 flex justify-between items-center border-b border-[#a3c1cd]">
+        <h1 class="text-xl font-bold text-[#e5c3bd]">Admin Dashboard</h1>
         <div>
-            <button onclick="window.location.href='user_generate.html'" class="bg-cyan-600 hover:bg-cyan-700 text-white px-3 py-1 rounded-lg text-sm mr-4">
+            <button onclick="window.location.href='user_generate.html'" class="bg-[#e5c3bd] text-[#4d5b6f] hover:bg-[#a3c1cd] px-3 py-1 rounded-lg text-sm mr-4">
                 Generate Key (User Flow)
             </button>
             <button onclick="logout()" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg text-sm">
@@ -25,42 +25,42 @@
     </header>
 
     <main class="container mx-auto p-6">
-        <div id="loading" class="text-center text-lg mt-10">Memuat data...</div>
+        <div id="loading" class="text-center text-lg mt-10 text-[#a3c1cd]">Memuat data...</div>
 
         <section class="mt-8">
-            <h2 class="text-2xl font-semibold mb-4 border-b border-gray-600 pb-2 text-orange-300">👥 List Users</h2>
-            <div id="userListContainer" class="overflow-x-auto bg-gray-700 rounded-lg shadow-lg">
-                <table class="min-w-full divide-y divide-gray-600">
-                    <thead class="bg-gray-600">
+            <h2 class="text-2xl font-semibold mb-4 border-b border-[#a3c1cd] pb-2 text-[#e5c3bd]">List Users</h2>
+            <div id="userListContainer" class="overflow-x-auto bg-[#4d5b6f]/50 rounded-lg shadow-lg">
+                <table class="min-w-full divide-y divide-[#a3c1cd]">
+                    <thead class="bg-[#4d5b6f]">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-200 uppercase tracking-wider">ID</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-200 uppercase tracking-wider">Nama Lengkap</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-200 uppercase tracking-wider">Email</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-200 uppercase tracking-wider">Status Akun</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-200 uppercase tracking-wider">Terdaftar Sejak</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-[#a3c1cd] uppercase tracking-wider">ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-[#a3c1cd] uppercase tracking-wider">Nama Lengkap</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-[#a3c1cd] uppercase tracking-wider">Email</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-[#a3c1cd] uppercase tracking-wider">Status Akun</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-[#a3c1cd] uppercase tracking-wider">Terdaftar Sejak</th>
                         </tr>
                     </thead>
-                    <tbody id="userTableBody" class="divide-y divide-gray-600">
-                        </tbody>
+                    <tbody id="userTableBody" class="divide-y divide-[#a3c1cd]/50">
+                    </tbody>
                 </table>
             </div>
         </section>
 
         <section class="mt-12">
-            <h2 class="text-2xl font-semibold mb-4 border-b border-gray-600 pb-2 text-orange-300">🔑 List API Keys</h2>
-            <div id="apiKeyListContainer" class="overflow-x-auto bg-gray-700 rounded-lg shadow-lg">
-                <table class="min-w-full divide-y divide-gray-600">
-                    <thead class="bg-gray-600">
+            <h2 class="text-2xl font-semibold mb-4 border-b border-[#a3c1cd] pb-2 text-[#e5c3bd]">List API Keys</h2>
+            <div id="apiKeyListContainer" class="overflow-x-auto bg-[#4d5b6f]/50 rounded-lg shadow-lg">
+                <table class="min-w-full divide-y divide-[#a3c1cd]/50">
+                    <thead class="bg-[#4d5b6f]">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-200 uppercase tracking-wider">Key ID</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-200 uppercase tracking-wider">Key (Partial)</th> 
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-200 uppercase tracking-wider">Pemilik (Email)</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-200 uppercase tracking-wider">Kedaluwarsa</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-200 uppercase tracking-wider">Status Key</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-[#a3c1cd] uppercase tracking-wider">Key ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-[#a3c1cd] uppercase tracking-wider">Key (Partial)</th> 
+                            <th class="px-6 py-3 text-left text-xs font-medium text-[#a3c1cd] uppercase tracking-wider">Pemilik (Email)</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-[#a3c1cd] uppercase tracking-wider">Kedaluwarsa</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-[#a3c1cd] uppercase tracking-wider">Status Key</th>
                         </tr>
                     </thead>
-                    <tbody id="apiKeyTableBody" class="divide-y divide-gray-600">
-                        </tbody>
+                    <tbody id="apiKeyTableBody" class="divide-y divide-[#a3c1cd]/50">
+                    </tbody>
                 </table>
             </div>
         </section>
@@ -72,24 +72,17 @@
         const apiKeyTableBody = document.getElementById('apiKeyTableBody');
         const loading = document.getElementById('loading');
 
-        // Pengecekan Token saat memuat halaman
         if (!token) {
             alert("Anda harus login sebagai admin untuk mengakses dashboard.");
             window.location.href = 'admin_login.html';
         }
 
-        // =========================================================================
-        // Fungsi Logout
-        // =========================================================================
         function logout() {
             localStorage.removeItem('adminToken');
             alert("Anda telah logout.");
             window.location.href = 'admin_login.html';
         }
 
-        // =========================================================================
-        // Fungsi Ambil Data User
-        // =========================================================================
         async function fetchUsers() {
             try {
                 const response = await fetch('/admin/users', {
@@ -115,19 +108,16 @@
 
         function renderUsers(users) {
             userTableBody.innerHTML = users.map(user => `
-                <tr class="hover:bg-gray-600">
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-100">${user.id}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">${user.first_name} ${user.last_name}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">${user.email}</td>
+                <tr class="hover:bg-[#4d5b6f]">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">${user.id}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-[#a3c1cd]">${user.first_name} ${user.last_name}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-[#a3c1cd]">${user.email}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold ${user.status === 'active' ? 'text-green-400' : 'text-red-400'}">${user.status.toUpperCase()}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">${new Date(user.created_at).toLocaleDateString()}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-[#a3c1cd]">${new Date(user.created_at).toLocaleDateString()}</td>
                 </tr>
             `).join('');
         }
         
-        // =========================================================================
-        // Fungsi Ambil Data API Keys
-        // =========================================================================
         async function fetchApiKeys() {
             try {
                 const response = await fetch('/admin/apikeys', {
@@ -155,22 +145,20 @@
         function renderApiKeys(apiKeys) {
             apiKeyTableBody.innerHTML = apiKeys.map(key => {
                 const keyStatusClass = key.status_realtime === 'active' ? 'active-status' : 'inactive-status';
-                // Menampilkan Key Partial (disesuaikan karena prefix dihapus)
                 const keyPartial = `***-${key.api_key.substring(key.api_key.length - 15)}`;
                 
                 return `
-                    <tr class="hover:bg-gray-600">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-100">${key.key_id}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-mono text-cyan-400">${keyPartial}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">${key.user_email}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">${key.expiry_date}</td>
+                    <tr class="hover:bg-[#4d5b6f]">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">${key.key_id}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-mono text-[#e5c3bd]">${keyPartial}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-[#a3c1cd]">${key.user_email}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-[#a3c1cd]">${key.expiry_date}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-bold ${keyStatusClass}">${key.status_realtime.toUpperCase()}</td>
                     </tr>
                 `;
             }).join('');
         }
 
-        // Panggil fungsi untuk memuat data saat halaman dimuat
         document.addEventListener('DOMContentLoaded', () => {
             if (token) {
                 fetchUsers();
